@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "myapp"
+version = "0.1.0"
+description = "This aps in the directory."
+authors = ["kunj-gandhi889 <kunjmcg@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
