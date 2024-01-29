@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "cli_app"
+version = "0.1.0"
+description = "This project processes the files in the directory and generates a report."
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
