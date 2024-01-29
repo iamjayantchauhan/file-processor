@@ -2,7 +2,7 @@
 name = "cli_app"
 version = "0.1.0"
 description = "This project processes the files in the directory and generates a report."
-authors = ["kunj-gandhi889 <kunjmcg@gmail.com>"]
+authors = []
 readme = "README.md"
 
 [tool.poetry.dependencies]
