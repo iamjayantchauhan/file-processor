@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "file-processor"
+name = "cli_app"
 version = "0.1.0"
-description = ""
-authors = ["Jinesh Patel <jineshpatel2002@gmail.com>"]
+description = "This project processes the files in the directory and generates a report."
+authors = []
 readme = "README.md"
 
 [tool.poetry.dependencies]
