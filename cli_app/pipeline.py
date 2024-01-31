@@ -11,6 +11,7 @@ from utils.file_filters import (
     validate_filename_format,
     validate_file_type,
 )
+from utils import create_dated_directory as cdd
 
 
 # pylint: disable=too-many-instance-attributes
@@ -46,6 +47,27 @@ class Processor:
         self.total_file_count = 0
         self.source_file_count = 0
         self.target_file_count = 0
+        self.source_dated_dir = self.target_dated_dir = None
+
+    def validate_source_directory(self):
+        """
+        Checks if source directory at given path exists otherwise creates it
+        """
+        if not os.path.exists(self.source_dir):
+            try:
+                os.mkdir(self.source_dir)
+            except OSError as e:
+                print(e, " at ", self.validate_source_directory)
+
+    def validate_target_directory(self):
+        """
+        Checks if target directory at given path exists otherwise creates it
+        """
+        if not os.path.exists(self.target_dir):
+            try:
+                os.mkdir(self.target_dir)
+            except OSError as e:
+                print(e, " at ", self.validate_target_directory)
 
     def file_operation_summary_display(self):
         """
@@ -63,19 +85,27 @@ class Processor:
             f"Exceeding the size limit OR file name format mismatch."
         )
 
+
     def process_directory(self):
         """
-        This method handles the flow of application
+        controls flow of execution of application
+        :return: summary of execution (count of total files in input directory,
+        count of files moved to source directory and count of files copied into target directory)
         """
-        # create source and target directory if not exists
+        # extract files from input directory and create dated directory with appropriate execution number
 
-        # create dated directory with appropriate execution number
+        # Validating Source and Target directories
+        self.validate_source_directory()
+        self.validate_target_directory()
 
-        # path of dated directory in source
-        source_dated_directory = ""
+        # Pipline entry point
+        self.source_dated_dir, self.target_dated_dir = cdd.producer_dated_dir(
+            self.source_dir, self.target_dir
+        )
 
-        # path of dated directory in target
-        target_dated_directory = ""
+        # path of dated directory in source and target
+        source_dated_dir = self.source_dated_dir
+        target_dated_dir = self.target_dated_dir
 
         # list files in the user given path
         files = os.listdir(self.path)
@@ -92,13 +122,13 @@ class Processor:
         self.source_file_count = len(matched_file_type_list)
 
         # move valid files from user given path to source dated directory
-        move_files(self.path, source_dated_directory, matched_file_type_list)
+        move_files(self.path, source_dated_dir, matched_file_type_list)
 
         # files with valid file name and file size
         accepted_files = list(
             filter(
                 lambda file: validate_file_size(
-                    file, source_dated_directory, MAX_FILE_SIZE
+                    file, source_dated_dir, MAX_FILE_SIZE
                 )
                 and validate_filename_format(file, self.filename_format),
                 matched_file_type_list,
@@ -109,7 +139,7 @@ class Processor:
         self.target_file_count = len(accepted_files)
 
         # copy valid files from source directory to target directory
-        copy_files(source_dated_directory, target_dated_directory, accepted_files)
+        copy_files(source_dated_dir, target_dated_dir, accepted_files)
 
         # display summary
         self.file_operation_summary_display()

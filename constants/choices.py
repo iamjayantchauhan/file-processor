@@ -4,7 +4,7 @@
 
 # directory that maps formats with their validating functions
 FILENAME_FUNCTIONS_MAPPING = {
-    "alphabetic": lambda name: name.isalpha(),
+"alphabetic": lambda name: name.isalpha(),
     "numeric": lambda name: name.isnumeric(),
     "alphanumeric": lambda name: name.isalnum(),
 }
