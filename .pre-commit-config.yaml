@@ -7,7 +7,6 @@ repos:
     -   id: check-builtin-literals
     -   id: check-docstring-first
     -   id: debug-statements
-    -   id: double-quote-string-fixer
     -   id: fix-encoding-pragma
     -   id: check-added-large-files
     -   id: check-yaml
@@ -22,13 +21,13 @@ repos:
           minimum_pre_commit_version: 2.9.2
           require_serial: true
           types_or: [ python, pyi ]
-- repo: https://github.com/PyCQA/pylint
-  rev: v3.0.3
-  hooks:
+-   repo: https://github.com/PyCQA/pylint
+    rev: v3.0.3
+    hooks:
     - id: pylint
       name: pylint
       entry: pylint
-      language: system
+      language: python
       types: [python]
       args:
         [
