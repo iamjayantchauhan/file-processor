@@ -20,7 +20,6 @@ class Processor:
 
     Methods:
         process_directory(): Process inputs and return results
-        __validate_filesize_and_filename(): Validates files based on file size and file name
 
     """
     def __init__(self, path: str, file_type: str, filename_format: str):
@@ -37,30 +36,21 @@ class Processor:
         self.source_dir = os.path.join(self.path, 'source')
         self.target_dir = os.path.join(self.path, 'target')
 
-    def __validate_filesize_and_filename(self, source: str, files: list, size: int, key: str) -> list:
-        """
-        This function validates file size and file format based on given criteria for given files
-        :param source: path of the directory in which files resides
-        :param files: list of files to validate
-        :param size: maximum size limit
-        :param key: name of file format
-        :return: list of files passed given criteria
-        """
-
-        valid_files = list(
-            filter(lambda x: validate_file_size(x, source, size) and validate_filename_format(x, key), files))
-
-        return valid_files
-
     def process_directory(self):
-        # code until files are processed to Source directory
+        # extract files from input directory and create dated directory with appropriate execution number
+        # path of dated directory in source
         source_dated_directory = ""
+
+        # path of dated directory in target
         target_dated_directory = ""
+
+        # validate file type and move to source directory
+        # files with valid file type
         source_files = []
 
         # files with valid file name and file size
-        accepted_files = self.__validate_filesize_and_filename(source_dated_directory, source_files, MAX_FILE_SIZE,
-                                                               self.filename_format)
+        accepted_files = list(
+            filter(lambda file: validate_file_size(file, source_dated_directory, MAX_FILE_SIZE) and validate_filename_format(file, self.filename_format), source_files))
 
         # copy valid files from source directory to target directory
         copy_files(source_dated_directory, target_dated_directory, accepted_files)
