@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     This module provides a set of utility functions for common tasks related
     to directory operations.

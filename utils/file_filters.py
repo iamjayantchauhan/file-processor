@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 """
     This module includes functions for filtering and processing files based on various criteria.
 """
 
 import os
 
-from constants.choices import FILENAME_FUCTIONS_MAPPING
+from constants.choices import FILENAME_FUNCTIONS_MAPPING
 from constants.sizes import MB_TO_BYTES
 
 
@@ -17,7 +16,8 @@ def validate_file_size(file: str, source: str, size: int) -> bool:
     :param size: maximum size limit
     :return: True if the size of given file is below given size, False otherwise
     """
-    return os.stat(os.path.join(source, file)).st_size / MB_TO_BYTES <= size
+    flag = os.stat(os.path.join(source, file)).st_size / MB_TO_BYTES <= size
+    return flag
 
 
 def validate_filename_format(file: str, key: str) -> bool:
@@ -28,7 +28,7 @@ def validate_filename_format(file: str, key: str) -> bool:
     :return: True if file name matches with given format, False otherwise
     """
     filename, _ = os.path.splitext(file)
-    return FILENAME_FUCTIONS_MAPPING[key](filename)
+    return FILENAME_FUNCTIONS_MAPPING[key](filename)
 
 
 def validate_file_type(file: str, valid_file_type: str) -> bool:

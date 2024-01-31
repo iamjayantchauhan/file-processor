@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Main file for the project. Only take input and process pipeline here.
 """

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     This module contains constant values and conversations used throughout the application.
 """

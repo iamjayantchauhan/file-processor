@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     This module handles flow of operations of this application
 """
