@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 """
     This module includes functions for filtering and processing files based on various criteria.
 """
 
 import os
+
 from constants.choices import FILENAME_FUCTIONS_MAPPING
 from constants.sizes import MB_TO_BYTES
 
@@ -27,3 +29,13 @@ def validate_filename_format(file: str, key: str) -> bool:
     """
     filename, _ = os.path.splitext(file)
     return FILENAME_FUCTIONS_MAPPING[key](filename)
+
+
+def validate_file_type(file: str, valid_file_type: str) -> bool:
+    """
+    :param file: name of the file
+    :param valid_file_type: valid file type given by user
+    :return: True if file matches with given valid_file_type, False otherwise
+    """
+    flag = file.casefold().endswith(str(".") + valid_file_type.casefold())
+    return flag
