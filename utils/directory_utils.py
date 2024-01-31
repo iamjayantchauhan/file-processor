@@ -5,6 +5,7 @@
 
 import os
 import shutil
+import datetime as dt
 
 
 def copy_files(source_directory: str, target_directory: str, files: list):
@@ -31,3 +32,40 @@ def move_files(source_directory: str, target_directory: str, files: list):
     """
     for file in files:
         shutil.move(os.path.join(source_directory, file), target_directory)
+
+
+def create_directory_ifnot(path: str):
+    """
+    Checks if directory at given path exists otherwise creates it
+    """
+    if not os.path.exists(path):
+        try:
+            os.mkdir(path)
+        except OSError as e:
+            print(e, " at create_directory_ifnot method")
+
+
+def producer_dated_dir(path: str) -> str:
+    """
+    Create dated directories in the source and target directories based on the current date.
+
+    Parameters:
+    - path (str): The path to directory where the dated subdirectories will be created.
+
+    Returns:
+    string: A string containing the path of the newly created dated directories.
+    """
+
+    today_date = dt.datetime.now().strftime("%d%m%Y")
+
+    try:
+        folders_date = list(filter(lambda x: today_date in x, os.listdir(path)))
+        new_dated_folder = os.path.join(
+            path, today_date + "_" + str(len(folders_date) + 1)
+        )
+
+        os.mkdir(path)
+        return new_dated_folder
+    except OSError as e:
+        print(e, " at ", producer_dated_dir)
+        return ""

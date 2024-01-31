@@ -5,13 +5,17 @@
 import os
 
 from constants.sizes import MAX_FILE_SIZE
-from utils.directory_utils import copy_files, move_files
+from utils.directory_utils import (
+    copy_files,
+    move_files,
+    producer_dated_dir,
+    create_directory_ifnot,
+)
 from utils.file_filters import (
     validate_file_size,
     validate_filename_format,
     validate_file_type,
 )
-from utils import create_dated_directory as cdd
 
 
 # pylint: disable=too-many-instance-attributes
@@ -49,26 +53,6 @@ class Processor:
         self.target_file_count = 0
         self.source_dated_dir = self.target_dated_dir = None
 
-    def validate_source_directory(self):
-        """
-        Checks if source directory at given path exists otherwise creates it
-        """
-        if not os.path.exists(self.source_dir):
-            try:
-                os.mkdir(self.source_dir)
-            except OSError as e:
-                print(e, " at ", self.validate_source_directory)
-
-    def validate_target_directory(self):
-        """
-        Checks if target directory at given path exists otherwise creates it
-        """
-        if not os.path.exists(self.target_dir):
-            try:
-                os.mkdir(self.target_dir)
-            except OSError as e:
-                print(e, " at ", self.validate_target_directory)
-
     def file_operation_summary_display(self):
         """
         This is a simple function which displays the final summary of the process.
@@ -88,19 +72,17 @@ class Processor:
     def process_directory(self):
         """
         controls flow of execution of application
-        :return: summary of execution (count of total files in input directory,
         count of files moved to source directory and count of files copied into target directory)
         """
         # extract files from input directory and create dated directory with appropriate execution number
 
         # Validating Source and Target directories
-        self.validate_source_directory()
-        self.validate_target_directory()
+        create_directory_ifnot(self.source_dir)
+        create_directory_ifnot(self.target_dir)
 
         # Pipline entry point
-        self.source_dated_dir, self.target_dated_dir = cdd.producer_dated_dir(
-            self.source_dir, self.target_dir
-        )
+        self.source_dated_dir = producer_dated_dir(self.source_dir)
+        self.target_dated_dir = producer_dated_dir(self.target_dir)
 
         # path of dated directory in source and target
         source_dated_dir = self.source_dated_dir
