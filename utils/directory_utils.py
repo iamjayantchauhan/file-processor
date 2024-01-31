@@ -4,7 +4,6 @@
 
 import os
 import shutil
-from pathlib import Path
 
 
 def copy_files(source_directory: str, target_directory: str, files: list):
