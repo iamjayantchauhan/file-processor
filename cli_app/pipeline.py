@@ -85,7 +85,6 @@ class Processor:
             f"Exceeding the size limit OR file name format mismatch."
         )
 
-
     def process_directory(self):
         """
         controls flow of execution of application
@@ -127,9 +126,7 @@ class Processor:
         # files with valid file name and file size
         accepted_files = list(
             filter(
-                lambda file: validate_file_size(
-                    file, source_dated_dir, MAX_FILE_SIZE
-                )
+                lambda file: validate_file_size(file, source_dated_dir, MAX_FILE_SIZE)
                 and validate_filename_format(file, self.filename_format),
                 matched_file_type_list,
             )
