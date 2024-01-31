@@ -22,7 +22,8 @@ repos:
           minimum_pre_commit_version: 2.9.2
           require_serial: true
           types_or: [ python, pyi ]
-- repo: local
+- repo: https://github.com/PyCQA/pylint
+  rev: v3.0.3
   hooks:
     - id: pylint
       name: pylint
