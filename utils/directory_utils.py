@@ -14,10 +14,14 @@ def copy_files(source_directory: str, target_directory: str, files: list):
     :param target_directory: path of directory where copied files to be pasted
     :param files: list of files to be copied
     """
-    for file in files:
-        shutil.copy(
-            os.path.join(source_directory, file), os.path.join(target_directory, file)
-        )
+    if not (os.path.exists(source_directory) or os.path.exists(target_directory)):
+        for file in files:
+            try:
+                shutil.copy(
+                    os.path.join(source_directory, file), os.path.join(target_directory, file)
+                )
+            except OSError as e:
+                print(f"{e} occurred while copying files from {source_directory} to {target_directory}")
 
 
 def move_files(source_directory: str, target_directory: str, files: list):
@@ -29,5 +33,9 @@ def move_files(source_directory: str, target_directory: str, files: list):
     :param target_directory: path of directory where files to be moved
     :param files: list of files to be moved
     """
-    for file in files:
-        shutil.move(os.path.join(source_directory, file), target_directory)
+    if not (os.path.exists(source_directory) or os.path.exists(target_directory)):
+        for file in files:
+            try:
+                shutil.move(os.path.join(source_directory, file), target_directory)
+            except OSError as e:
+                print(f"{e} occurred while moving files from {source_directory} to {target_directory}")
