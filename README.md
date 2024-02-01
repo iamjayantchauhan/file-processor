@@ -54,7 +54,6 @@ Options:
 ```bash
 ├── cli_app
 │   ├── __init__.py
-│   ├── inputs.py
 │   ├── pipeline.py
 ├── constants
 │   ├── __init__.py
@@ -62,6 +61,7 @@ Options:
 │   ├── sizes.py
 ├── utils
 │   ├── __init__.py
+│   ├── inputs.py
 │   ├── directory_utils.py
 │   ├── file_filters.py
 ├── .gitignore
