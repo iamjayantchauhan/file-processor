@@ -39,4 +39,4 @@ def get_input(path: str = None, file_format: str = "csv", name_format: str = "al
     :return: path, file_format, name_format
     """
 
-    return path, file_format, name_format
+    return path, file_format, choices.VALID_FILENAME_FORMATS[name_format]
