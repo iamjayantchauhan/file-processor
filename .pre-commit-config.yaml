@@ -23,17 +23,17 @@ repos:
           minimum_pre_commit_version: 2.9.2
           require_serial: true
           types_or: [ python, pyi ]
-- repo: local
-  hooks:
+-   repo: local
+    hooks:
     - id: pylint
       name: pylint
       entry: pylint
-      language: python
+      language: system
       types: [python]
       args:
         [
           "-rn", # Only display messages
-          "-sn", # Don't display the score
+          --max-line-length=120
         ]
 - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
   rev: v9.11.0
