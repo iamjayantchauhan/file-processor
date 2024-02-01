@@ -10,7 +10,7 @@ from constants import choices
 @click.option(
     "--path",
     "-p",
-    type=click.Path(exists=True, resolve_path=True),
+    type=click.Path(exists=True, resolve_path=True, readable=True, file_okay=False),
     help="Choose a directory path",
     prompt="Please select a directory path",
 )
