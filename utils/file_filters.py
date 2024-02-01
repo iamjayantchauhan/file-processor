@@ -3,7 +3,6 @@
 """
 
 import os
-
 from constants.choices import FILENAME_FUNCTIONS_MAPPING
 from constants.sizes import MB_TO_BYTES
 
