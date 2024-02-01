@@ -6,6 +6,7 @@
 import os
 import shutil
 import datetime as dt
+from utils.file_filters import filter_dirs_only
 
 
 def copy_files(source_directory: str, target_directory: str, files: list):
@@ -19,10 +20,13 @@ def copy_files(source_directory: str, target_directory: str, files: list):
     for file in files:
         try:
             shutil.copy(
-                os.path.join(source_directory, file), os.path.join(target_directory, file)
+                os.path.join(source_directory, file),
+                os.path.join(target_directory, file),
             )
         except OSError as e:
-            print(f"{e} occurred while copying files from {source_directory} to {target_directory}")
+            print(
+                f"{e} occurred while copying files from {source_directory} to {target_directory}"
+            )
 
 
 def move_files(source_directory: str, target_directory: str, files: list):
@@ -38,18 +42,17 @@ def move_files(source_directory: str, target_directory: str, files: list):
         try:
             shutil.move(os.path.join(source_directory, file), target_directory)
         except OSError as e:
-            print(f"{e} occurred while moving files from {source_directory} to {target_directory}")
+            print(
+                f"{e} occurred while moving files from {source_directory} to {target_directory}"
+            )
 
 
-def create_directory_ifnot(path: str):
+def create_directory_if_not(path: str):
     """
     Checks if directory at given path exists otherwise creates it
     """
     if not os.path.exists(path):
-        try:
-            os.mkdir(path)
-        except OSError as e:
-            print(e, " at create_directory_ifnot method")
+        os.mkdir(path)
 
 
 def producer_dated_dir(path: str) -> str:
@@ -64,12 +67,8 @@ def producer_dated_dir(path: str) -> str:
     """
 
     today_date = dt.datetime.now().strftime("%d%m%Y")
-    folders_date = list(
-        filter(
-            lambda x: today_date in x and (os.path.isdir(os.path.join(path, x))),
-            os.listdir(path),
-        )
-    )
+    dir_list = filter_dirs_only(path)
+    folders_date = list(filter(lambda name: today_date in name, dir_list))
     execution_no = [x.split("_")[1] for x in folders_date]
     new_dated_folder = ""
     last_execution = 0

@@ -42,3 +42,25 @@ def validate_file_type(file: str, valid_file_type: str) -> bool:
     """
     flag = file.casefold().endswith(str(".") + valid_file_type.casefold())
     return flag
+
+
+def filter_files_only(path: str) -> list:
+    """
+    Args:
+        path: path from where user wants to filter files
+    Returns: list containing files only
+    """
+    files = [
+        file for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))
+    ]
+    return files
+
+
+def filter_dirs_only(path: str) -> list:
+    """
+    Args:
+        path: path from where user wants to filter directories
+    Returns:list containing directories only
+    """
+    dirs = [dir for dir in os.listdir(path) if os.path.isdir(os.path.join(path, dir))]
+    return dirs

@@ -22,3 +22,5 @@ if __name__ == "__main__":
         print(f"\nInvalid Parameter: {e}")
     except click.exceptions.UsageError as e:
         print(f"\nInvalid Usage: {e}")
+    except PermissionError as e:
+        print(f"\n{e}: Please enter accessible path.")
