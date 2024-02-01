@@ -5,7 +5,12 @@
 import os
 
 from constants.sizes import MAX_FILE_SIZE
-from utils.directory_utils import copy_files, move_files
+from utils.directory_utils import (
+    copy_files,
+    move_files,
+    producer_dated_dir,
+    create_directory_ifnot,
+)
 from utils.file_filters import (
     validate_file_size,
     validate_filename_format,
@@ -46,6 +51,7 @@ class Processor:
         self.total_file_count = 0
         self.source_file_count = 0
         self.target_file_count = 0
+        self.source_dated_dir = self.target_dated_dir = None
 
     def file_operation_summary_display(self):
         """
@@ -65,17 +71,18 @@ class Processor:
 
     def process_directory(self):
         """
-        This method handles the flow of application
+        controls flow of execution of application
+        count of files moved to source directory and count of files copied into target directory)
         """
-        # create source and target directory if not exists
+        # extract files from input directory and create dated directory with appropriate execution number
 
-        # create dated directory with appropriate execution number
+        # Validating Source and Target directories
+        create_directory_ifnot(self.source_dir)
+        create_directory_ifnot(self.target_dir)
 
-        # path of dated directory in source
-        source_dated_directory = ""
-
-        # path of dated directory in target
-        target_dated_directory = ""
+        # Pipline entry point
+        self.source_dated_dir = producer_dated_dir(self.source_dir)
+        self.target_dated_dir = producer_dated_dir(self.target_dir)
 
         # list files in the user given path
         files = os.listdir(self.path)
@@ -92,13 +99,13 @@ class Processor:
         self.source_file_count = len(matched_file_type_list)
 
         # move valid files from user given path to source dated directory
-        move_files(self.path, source_dated_directory, matched_file_type_list)
+        move_files(self.path, self.source_dated_dir, matched_file_type_list)
 
         # files with valid file name and file size
         accepted_files = list(
             filter(
                 lambda file: validate_file_size(
-                    file, source_dated_directory, MAX_FILE_SIZE
+                    file, self.source_dated_dir, MAX_FILE_SIZE
                 )
                 and validate_filename_format(file, self.filename_format),
                 matched_file_type_list,
@@ -109,7 +116,7 @@ class Processor:
         self.target_file_count = len(accepted_files)
 
         # copy valid files from source directory to target directory
-        copy_files(source_dated_directory, target_dated_directory, accepted_files)
+        copy_files(self.source_dated_dir, self.target_dated_dir, accepted_files)
 
         # display summary
         self.file_operation_summary_display()

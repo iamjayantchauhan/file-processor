@@ -9,6 +9,9 @@ repos:
     -   id: debug-statements
     -   id: check-added-large-files
     -   id: check-yaml
+    -   id: check-json
+    -   id: end-of-file-fixer
+    -   id: check-merge-conflict
 -   repo: https://github.com/psf/black
     rev: 24.1.1
     hooks:
@@ -20,18 +23,17 @@ repos:
           minimum_pre_commit_version: 2.9.2
           require_serial: true
           types_or: [ python, pyi ]
--   repo: https://github.com/PyCQA/pylint
-    rev: v3.0.3
+-   repo: local
     hooks:
     - id: pylint
       name: pylint
       entry: pylint
-      language: python
+      language: system
       types: [python]
       args:
         [
           "-rn", # Only display messages
-          "-sn", # Don't display the score
+          --max-line-length=120
         ]
 - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
   rev: v9.11.0
