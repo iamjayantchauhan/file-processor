@@ -9,12 +9,13 @@ from utils.directory_utils import (
     copy_files,
     move_files,
     producer_dated_dir,
-    create_directory_ifnot,
+    create_directory_if_not,
 )
 from utils.file_filters import (
     validate_file_size,
     validate_filename_format,
     validate_file_type,
+    filter_files_only,
 )
 
 
@@ -57,6 +58,7 @@ class Processor:
         """
         This is a simple function which displays the final summary of the process.
         """
+        print("\n" + " Summary Of File Processor ".center(70, "-") + "\n")
         print(
             f"(i) {self.source_file_count} file(s) out of a total of "
             f"{self.total_file_count} files are matched with your given file type."
@@ -66,7 +68,7 @@ class Processor:
         )
         print(
             f"(iii) {self.source_file_count - self.target_file_count} file(s) were rejected. "
-            f"Exceeding the size limit OR file name format mismatch."
+            f"Exceeding the size limit OR file name format mismatch.\n"
         )
 
     def process_directory(self):
@@ -77,18 +79,18 @@ class Processor:
         # extract files from input directory and create dated directory with appropriate execution number
 
         # Validating Source and Target directories
-        create_directory_ifnot(self.source_dir)
-        create_directory_ifnot(self.target_dir)
+        create_directory_if_not(self.source_dir)
+        create_directory_if_not(self.target_dir)
 
         # Pipline entry point
         self.source_dated_dir = producer_dated_dir(self.source_dir)
         self.target_dated_dir = producer_dated_dir(self.target_dir)
 
         # list files in the user given path
-        files = os.listdir(self.path)
+        files = filter_files_only(self.path)
 
         # assigning total file count at user given path
-        self.total_file_count = len(files) - 2
+        self.total_file_count = len(files)
 
         # files with valid file type
         matched_file_type_list = list(
