@@ -16,8 +16,15 @@ def validate_file_size(file: str, source: str, size: int) -> bool:
     :param size: maximum size limit
     :return: True if the size of given file is below given size, False otherwise
     """
-    flag = os.stat(os.path.join(source, file)).st_size / MB_TO_BYTES <= size
-    return flag
+    try:
+        file_path = os.path.join(source, file)
+        if not os.path.exists(file_path):
+            print(f"Path :'{file_path}' Does not exist while checking valid size. ")
+            return False
+        flag = os.path.getsize(file_path) / MB_TO_BYTES <= size
+        return flag
+    except OSError as e:
+        print(f"Error: while checking valid size of file as - {e} ")
 
 
 def validate_filename_format(file: str, key: str) -> bool:
