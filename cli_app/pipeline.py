@@ -84,10 +84,6 @@ class Processor:
         self.source_dated_dir = producer_dated_dir(self.source_dir)
         self.target_dated_dir = producer_dated_dir(self.target_dir)
 
-        # path of dated directory in source and target
-        source_dated_dir = self.source_dated_dir
-        target_dated_dir = self.target_dated_dir
-
         # list files in the user given path
         files = os.listdir(self.path)
 
@@ -103,12 +99,14 @@ class Processor:
         self.source_file_count = len(matched_file_type_list)
 
         # move valid files from user given path to source dated directory
-        move_files(self.path, source_dated_dir, matched_file_type_list)
+        move_files(self.path, self.source_dated_dir, matched_file_type_list)
 
         # files with valid file name and file size
         accepted_files = list(
             filter(
-                lambda file: validate_file_size(file, source_dated_dir, MAX_FILE_SIZE)
+                lambda file: validate_file_size(
+                    file, self.source_dated_dir, MAX_FILE_SIZE
+                )
                 and validate_filename_format(file, self.filename_format),
                 matched_file_type_list,
             )
@@ -118,7 +116,7 @@ class Processor:
         self.target_file_count = len(accepted_files)
 
         # copy valid files from source directory to target directory
-        copy_files(source_dated_dir, target_dated_dir, accepted_files)
+        copy_files(self.source_dated_dir, self.target_dated_dir, accepted_files)
 
         # display summary
         self.file_operation_summary_display()

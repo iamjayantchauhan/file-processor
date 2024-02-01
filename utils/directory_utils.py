@@ -57,15 +57,23 @@ def producer_dated_dir(path: str) -> str:
     """
 
     today_date = dt.datetime.now().strftime("%d%m%Y")
-
-    try:
-        folders_date = list(filter(lambda x: today_date in x, os.listdir(path)))
-        new_dated_folder = os.path.join(
-            path, today_date + "_" + str(len(folders_date) + 1)
+    folders_date = list(
+        filter(
+            lambda x: today_date in x and (os.path.isdir(os.path.join(path, x))),
+            os.listdir(path),
         )
+    )
+    execution_no = [x.split("_")[1] for x in folders_date]
+    new_dated_folder = ""
+    last_execution = 0
 
-        os.mkdir(path)
-        return new_dated_folder
+    if len(folders_date) != 0:
+        last_execution = max(int(x) for x in execution_no)
+    try:
+        new_dated_folder = os.path.join(
+            path, today_date + "_" + str(last_execution + 1)
+        )
+        os.mkdir(new_dated_folder)
     except OSError as e:
         print(e, " at ", producer_dated_dir)
-        return ""
+    return new_dated_folder
